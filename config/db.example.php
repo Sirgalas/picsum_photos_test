@@ -1,8 +1,9 @@
 <?php
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=db;dbname=app',
-    'username' => 'db_user',
-    'password' => '453433',
+    'dsn' => 'pgsql:host=db;dbname=picsum_photos',
+    'username' => 'postgres',
+    'password' => 'postgres',
     'charset' => 'utf8',
+
 ];

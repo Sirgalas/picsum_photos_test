@@ -9,6 +9,7 @@ help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 init: down build up composer-update migrations-migrate
+install:  build up composer-update migrations-migrate
 
 up: ## Start all containers in background for developers
 	$(docker_compose_bin) up --no-recreate -d
