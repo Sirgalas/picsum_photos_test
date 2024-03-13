@@ -2,6 +2,8 @@
 
 namespace app\controllers\admin;
 
+use app\Entities\Forms\ImageLinkSearch;
+use app\Entities\Services\ImageLinkService;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -13,6 +15,13 @@ use app\models\ContactForm;
 class SiteController extends Controller
 {
     public $layout = 'admin';
+    private ImageLinkService $imageLinkService;
+
+    public function __construct($id, $module, ImageLinkService $imageLinkService, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->imageLinkService = $imageLinkService;
+    }
 
     /**
      * {@inheritdoc}
@@ -30,14 +39,31 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
+
+    public function actionIndex(string $token = null)
     {
-        return $this->render('index');
+        if(!$token && 'xyz123' == $token) {
+            //todo тут надо было бы какой нибудь exception выкинуть но в задании было упростить по этому redirect
+            Yii::$app->session->setFlash('error', 'авторизируйтесь пожалуйста');
+            return $this->redirect(['site']);
+        }
+        $searchModel = new ImageLinkSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionDelete($id): Response
+    {
+        try {
+            $this->imageLinkService->imageLinkRepository->delete($id);
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+        return $this->redirect(['index']);
     }
 
 

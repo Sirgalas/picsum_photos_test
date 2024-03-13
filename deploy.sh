@@ -1,7 +1,6 @@
 #!/bin/sh
 
-MYPATH=$(dirname $0)
-cd MYPATH
+cd $(dirname $0)
 
 cp ./.env.example .env
 
@@ -14,3 +13,5 @@ chmod 777 ./config/db.php
 chmod 777 ./config/params.php
 
 make install
+
+mkdir ./web/assets

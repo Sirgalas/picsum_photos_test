@@ -9,13 +9,16 @@ RUN apt-get update && \
 
 RUN pecl install imagick
 
-RUN docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install mysqli pdo  pdo_mysql zip exif \
-    && docker-php-ext-enable mysqli pdo imagick\
-    && wget https://getcomposer.org/installer -O - -q \
+RUN docker-php-ext-install -j$(nproc) gd
+RUN docker-php-ext-install  zip exif
+RUN docker-php-ext-install  pdo pdo_pgsql \
+    && docker-php-ext-enable pdo
+
+RUN  docker-php-ext-enable   imagick
+RUN wget https://getcomposer.org/installer -O - -q \
     | php -- --install-dir=/bin --filename=composer --quiet \
-    && composer global require laravel/installer \
     && apt clean && apt autoremove --purge
+
 
 # Add user for laravel application
 RUN groupadd -g 1000 www

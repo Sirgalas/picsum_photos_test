@@ -8,6 +8,7 @@
 namespace app\assets;
 
 use yii\web\AssetBundle;
+use yii\web\AssetManager;
 
 /**
  * Main application asset bundle.
@@ -23,10 +24,10 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        'js/main.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap5\BootstrapAsset',
-        'rmrevin\yii\fontawesome\CdnProAssetBundle'
     ];
 }
