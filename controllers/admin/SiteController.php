@@ -42,10 +42,11 @@ class SiteController extends Controller
 
     public function actionIndex(string $token = null)
     {
-        if(!$token && 'xyz123' == $token) {
+
+        if(!$token && 'xyz123' !== $token) {
             //todo тут надо было бы какой нибудь exception выкинуть но в задании было упростить по этому redirect
             Yii::$app->session->setFlash('error', 'авторизируйтесь пожалуйста');
-            return $this->redirect(['site']);
+            return $this->redirect(['/site']);
         }
         $searchModel = new ImageLinkSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -63,7 +64,7 @@ class SiteController extends Controller
         } catch (\Exception $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
         }
-        return $this->redirect(['index']);
+        return $this->redirect(['index','token'=>'xyz123']);
     }
 
 
